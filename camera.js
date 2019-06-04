@@ -87,22 +87,45 @@ export default class camera extends React.Component {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
 
-    
+
 
     console.log("image height = " + imageProperties.height);
     console.log("IMAGE_TO_SCREEN_Y = " + IMAGE_TO_SCREEN_Y);
     console.log("IMAGE_TO_SCREEN_X = " + IMAGE_TO_SCREEN_X);
 
     return visionResp.map(item => {
-      return {
-        ...item,
-        position: {
-          width: item.bounding.width * IMAGE_TO_SCREEN_X,
-          left: item.bounding.left * IMAGE_TO_SCREEN_X,
-          height: item.bounding.height * IMAGE_TO_SCREEN_Y,
-          top: item.bounding.top * IMAGE_TO_SCREEN_Y
+      let count = 1;
+      if (item.text.includes('\n')) {
+        while (item.text.includes('\n')) {
+          item.text = item.text.replace("\n", "");
+          count = count + 1;
         }
-      };
+
+        console.log("item.text = " + item.text);
+        console.log("count = " + count);
+        for(let i = 0 ; i < count ; i++){
+          return {
+            ...item,
+            position: {
+              width: item.bounding.width * IMAGE_TO_SCREEN_X,
+              left: item.bounding.left * IMAGE_TO_SCREEN_X,
+              height: item.bounding.height * IMAGE_TO_SCREEN_Y / count,
+              top: (item.bounding.top * IMAGE_TO_SCREEN_Y) + i * (item.bounding.height * IMAGE_TO_SCREEN_Y / count)
+            }
+          };
+        }
+      } else {
+        return {
+          ...item,
+          position: {
+            width: item.bounding.width * IMAGE_TO_SCREEN_X,
+            left: item.bounding.left * IMAGE_TO_SCREEN_X,
+            height: item.bounding.height * IMAGE_TO_SCREEN_Y,
+            top: item.bounding.top * IMAGE_TO_SCREEN_Y
+          }
+        };
+      }
+
     });
   };
 
