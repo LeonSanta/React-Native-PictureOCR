@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "319215842736",
+    "firebase_url": "https://profound-legacy-239107.firebaseio.com",
+    "project_id": "profound-legacy-239107",
+    "storage_bucket": "profound-legacy-239107.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319215842736:android:9396e5e800023875",
+        "android_client_info": {
+          "package_name": "com.leoncamera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319215842736-5dm9js7v9352v9rfsiuhbj2n72gmebfb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnUS1z2VsMN5_DocgXQIZDOvetHcTlHks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319215842736-5dm9js7v9352v9rfsiuhbj2n72gmebfb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
