@@ -103,7 +103,6 @@ export default class camera extends React.Component {
 
         console.log("item.text = " + item.text);
         console.log("count = " + count);
-        for(let i = 0 ; i < count ; i++){
           return {
             ...item,
             position: {
@@ -113,7 +112,6 @@ export default class camera extends React.Component {
               top: (item.bounding.top * IMAGE_TO_SCREEN_Y) + i * (item.bounding.height * IMAGE_TO_SCREEN_Y / count)
             }
           };
-        }
       } else {
         return {
           ...item,
