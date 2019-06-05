@@ -98,11 +98,11 @@ export default class gallery extends Component {
         while (newvisionResp[i].text.includes('\n')) {
           newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
           if ((newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$'))))) != visionResp[i].text) {
-              this.setState(prevState => ({
-                eachLine: [...prevState.eachLine, { text: (newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$')))), bounding: { height: (visionResp[i].bounding.height / lineCountForHeight), width: (visionResp[i].bounding.width), left: (visionResp[i].bounding.left), top: ((visionResp[i].bounding.top) + ((lineCount - 1) * ((visionResp[i].bounding.height) / lineCountForHeight))) } }]
-              }));
+            this.setState(prevState => ({
+              eachLine: [...prevState.eachLine, { text: (newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$')))), bounding: { height: (visionResp[i].bounding.height / lineCountForHeight), width: (visionResp[i].bounding.width), left: (visionResp[i].bounding.left), top: ((visionResp[i].bounding.top) + ((lineCount - 1) * ((visionResp[i].bounding.height) / lineCountForHeight))) } }]
+            }));
           }
-          
+
           newvisionResp[i].text = newvisionResp[i].text.replace((newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$') + 1))), "");
           lineCount++;
 
