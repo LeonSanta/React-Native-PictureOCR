@@ -12,6 +12,7 @@ import { StyleSheet, TouchableOpacity, View, ImageBackground, CameraRoll } from 
 import { RNCamera as Camera } from 'react-native-camera';
 import RNTextDetector from "react-native-text-detector";
 import style, { screenHeight, screenWidth } from "./styles";
+import cloneDeep from 'lodash/cloneDeep';
 
 const PICTURE_OPTIONS = {
   quality: 1,
@@ -24,7 +25,9 @@ export default class camera extends React.Component {
     loading: false,
     image: null,
     error: null,
-    visionResp: []
+    visionResp: [],
+    eachLine: [],
+    newVisionResp: []
   };
 
 
@@ -72,9 +75,7 @@ export default class camera extends React.Component {
   };
 
   processImage = async (uri, imageProperties) => {
-    const visionResp = await RNTextDetector.detectFromUri(uri);
-    CameraRoll.saveToCameraRoll(uri);
-    console.log(visionResp);
+    visionResp = await RNTextDetector.detectFromUri(uri);
     if (!(visionResp && visionResp.length > 0)) {
       throw "UNMATCHED";
     }
@@ -96,12 +97,10 @@ export default class camera extends React.Component {
           visionResp[i].text = visionResp[i].text.replace("\n", "");
           lineCountForHeight++;
         }
-        visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n') - 1));
-        console.log("lineCountForHeight" + lineCountForHeight);
+        visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n')));
         while (newvisionResp[i].text.includes('\n')) {
           newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
           if ((newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$') - 1)))) != visionResp[i].text) {
-              console.log("newvisionResp[i].text = " + newvisionResp[i].text);
               this.setState(prevState => ({
                 eachLine: [...prevState.eachLine, { text: (newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$') - 1)))), bounding: { height: (visionResp[i].bounding.height / lineCountForHeight), width: (visionResp[i].bounding.width), left: (visionResp[i].bounding.left), top: ((visionResp[i].bounding.top) + ((lineCount - 1) * ((visionResp[i].bounding.height) / lineCountForHeight))) } }]
               }));
@@ -120,7 +119,6 @@ export default class camera extends React.Component {
     };
     visionResp = this.state.eachLine.concat(visionResp);
     console.log(visionResp);
-    console.log("visionResp.length = " + visionResp.length);
 
     return visionResp.map(item => {
       return {
