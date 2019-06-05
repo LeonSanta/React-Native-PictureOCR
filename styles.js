@@ -1,12 +1,10 @@
+
 import { StyleSheet } from "react-native";
 
 import Colors from "./theme/Colors";
 import Dimensions from "./theme/Dimensions";
 export const screenHeight = Dimensions.screenHeight;
 export const screenWidth = Dimensions.screenWidth;
-console.log("Dimensions.screenHeight" + Dimensions.screenHeight);
-console.log("Dimensions.screenWidth" + Dimensions.screenWidth);
-
 const styles = StyleSheet.create({
   screen: {
     backgroundColor: Colors.black,
@@ -14,8 +12,8 @@ const styles = StyleSheet.create({
   },
   camera: {
     position: "absolute",
-    width: Dimensions.screenWidth,
-    height: Dimensions.screenHeight,
+    width: screenWidth,
+    height: screenHeight,
     alignItems: "center",
     justifyContent: "center",
     top: 0,
@@ -24,8 +22,8 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     position: "absolute",
-    width: Dimensions.screenWidth,
-    height: Dimensions.screenHeight,
+    width: screenWidth,
+    height: screenHeight,
     alignItems: "flex-start",
     justifyContent: "flex-start",
     top: 0,
@@ -56,26 +54,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#FF6600"
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    alignSelf: 'center',
-  },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-    margin: 20,
   }
 });
 

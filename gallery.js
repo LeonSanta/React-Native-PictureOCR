@@ -7,10 +7,11 @@
  */
 
 import React, { Component } from 'react';
-import {StyleSheet, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableOpacity } from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
+import cloneDeep from 'lodash/cloneDeep';
 
 export default class gallery extends Component {
   constructor(props) {
@@ -21,34 +22,54 @@ export default class gallery extends Component {
       loading: false,
       image: null,
       error: null,
-      visionResp: []
-    };
-
+      visionResp: [],
+      eachLine: [],
+      newvisionResp: []
+    }
     this.getSelectedImages = this.getSelectedImages.bind(this);
   }
+
+  reset(error = "OTHER") {
+    this.setState(
+      {
+        loading: false,
+        image: null,
+        error
+      },
+      () => {
+        // setTimeout(() => this.camera.startPreview(), 500);
+      }
+    );
+  }
+
 
   async getSelectedImages(images, current) {
     var num = images.length;
     this.setState({
       num: num,
       selected: images,
+      loading: true
     });
-    if (this.state.selected[0] != null) {
-      this.setState(
-        {
-          image: this.state.selected[0].uri
-        },
-        () => {
-          console.log(this.state.selected[0].uri);
+    try {
+      if (this.state.selected[0] != null) {
+        this.setState(
+          {
+            image: this.state.selected[0].uri
+          },
+          () => {
+            console.log(this.state.selected[0].uri);
 
-          this.processImage(this.state.selected[0].uri, {
-            height: this.state.selected[0].height,
-            width: this.state.selected[0].width
-          });
-        }
-      );
+            this.processImage(this.state.selected[0].uri, {
+              height: this.state.selected[0].height,
+              width: this.state.selected[0].width
+            });
+          }
+        );
+      }
+    } catch (e) {
+      console.warn(e);
+      this.reset(e);
     }
-    
   }
 
   processImage = async (uri, imageProperties) => {
@@ -65,12 +86,35 @@ export default class gallery extends Component {
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
-
-    
-
-    console.log("image height = " + imageProperties.height);
     console.log("IMAGE_TO_SCREEN_Y = " + IMAGE_TO_SCREEN_Y);
     console.log("IMAGE_TO_SCREEN_X = " + IMAGE_TO_SCREEN_X);
+    for (let i = 0; i < visionResp.length; i++) {
+      if (visionResp[i].text.includes('\n')) {
+        newvisionResp = cloneDeep(visionResp);
+        var lineCount = 1;
+        while (newvisionResp[i].text.includes('\n')) {
+          newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
+          if ((newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$'))))!= visionResp[i].text){
+          this.setState(prevState => ({
+            eachLine: [...prevState.eachLine, {text: (newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$')))),boundging: {height: 0, width: 0, top: 0, left: 0}}]
+          }));
+          }
+          visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n')));
+          console.log(newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$'))));
+          newvisionResp[i].text = newvisionResp[i].text.replace((newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$') + 1))));
+          lineCount++;
+        }
+        console.log(newvisionResp[i].text);
+        visionResp[i].bounding.height = visionResp[i].bounding.height / lineCount;
+        console.log("visionResp[" + i + "].text", visionResp[i].text, "lineCount = " + lineCount);
+        console.log("--------------------------------------");
+      }
+    };
+
+    for (let i = 0; i < this.state.eachLine.length; i++) {
+      console.log("eachLine[" + i + "]", this.state.eachLine[i]);
+    }
+
 
     return visionResp.map(item => {
       return {
@@ -87,18 +131,19 @@ export default class gallery extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.content}>
-        </View>
-        <CameraRollPicker
-          groupTypes='SavedPhotos'
-          assetType='Photos'
-          maximum={1}
-          selected={this.state.selected}
-          imagesPerRow={3}
-          imageMargin={5}
-          callback={this.getSelectedImages} />
-              {this.state.image ? (
+      <View style={styles.screen}>
+        {!this.state.image ? (
+          <CameraRollPicker
+            groupTypes='SavedPhotos'
+            assetType='Photos'
+            maximum={1}
+            selected={this.state.selected}
+            imagesPerRow={3}
+            imageMargin={5}
+            callback={this.getSelectedImages}>
+          </CameraRollPicker>
+        ) : null}
+        {this.state.image ? (
           <ImageBackground
             source={{ uri: this.state.image }}
             style={styles.imageBackground}

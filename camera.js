@@ -100,10 +100,11 @@ export default class camera extends React.Component {
           newItem.text = newItem.text.replace("\n", "");
           lineCount++;
         }
+        console.log("lineCount", lineCount);
         while (lineCount > 1) {
           lineCount--;
           console.log("item", item);
-          output[newCount] = this.makeLine(item, lineCount + 1, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X);
+          output[newCount] = this.makeLine(item, lineCount, newCount, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X);
           console.log("output : ", output);
           newCount++;
           
@@ -124,14 +125,15 @@ export default class camera extends React.Component {
     });
   };
 
-  makeLine = (item, count, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X) => {
+  makeLine = (item, lineCount, newCount, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X) => {
+    console.log("makeLine", item);
     return {
       ...item,
       position: {
         width: item.bounding.width * IMAGE_TO_SCREEN_X,
         left: item.bounding.left * IMAGE_TO_SCREEN_X,
-        height: item.bounding.height * IMAGE_TO_SCREEN_Y / count,
-        top: item.bounding.top * IMAGE_TO_SCREEN_Y + ((item.bounding.height / count ) * IMAGE_TO_SCREEN_Y)
+        height: item.bounding.height * IMAGE_TO_SCREEN_Y / lineCount,
+        top: item.bounding.top * IMAGE_TO_SCREEN_Y + ((item.bounding.height / lineCount  * IMAGE_TO_SCREEN_Y) * newCount)
       }
     };
   }
