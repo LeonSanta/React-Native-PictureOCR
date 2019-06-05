@@ -86,34 +86,29 @@ export default class camera extends React.Component {
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
-
-
-
     console.log("image height = " + imageProperties.height);
     console.log("IMAGE_TO_SCREEN_Y = " + IMAGE_TO_SCREEN_Y);
     console.log("IMAGE_TO_SCREEN_X = " + IMAGE_TO_SCREEN_X);
 
     return visionResp.map(item => {
-      let count = 1;
+      var lineCount = 1;
+      var newCount = 0;
+      var output = [];
       if (item.text.includes('\n')) {
-        while (item.text.includes('\n')) {
-          item.text = item.text.replace("\n", "");
-          count = count + 1;
+        const newItem = item;
+        while (newItem.text.includes('\n')) {
+          newItem.text = newItem.text.replace("\n", "");
+          lineCount++;
         }
-
-        console.log("item.text = " + item.text);
-        console.log("count = " + count);
-        for(let i = 0 ; i < count ; i++){
-          return {
-            ...item,
-            position: {
-              width: item.bounding.width * IMAGE_TO_SCREEN_X,
-              left: item.bounding.left * IMAGE_TO_SCREEN_X,
-              height: item.bounding.height * IMAGE_TO_SCREEN_Y / count,
-              top: (item.bounding.top * IMAGE_TO_SCREEN_Y) + i * (item.bounding.height * IMAGE_TO_SCREEN_Y / count)
-            }
-          };
+        while (lineCount > 1) {
+          lineCount--;
+          console.log("item", item);
+          output[newCount] = this.makeLine(item, lineCount + 1, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X);
+          console.log("output : ", output);
+          newCount++;
+          
         }
+        return output;
       } else {
         return {
           ...item,
@@ -128,6 +123,18 @@ export default class camera extends React.Component {
 
     });
   };
+
+  makeLine = (item, count, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X) => {
+    return {
+      ...item,
+      position: {
+        width: item.bounding.width * IMAGE_TO_SCREEN_X,
+        left: item.bounding.left * IMAGE_TO_SCREEN_X,
+        height: item.bounding.height * IMAGE_TO_SCREEN_Y / count,
+        top: item.bounding.top * IMAGE_TO_SCREEN_Y + ((item.bounding.height / count ) * IMAGE_TO_SCREEN_Y)
+      }
+    };
+  }
 
 
   render() {
