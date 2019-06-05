@@ -83,61 +83,57 @@ export default class camera extends React.Component {
     });
   };
 
+
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
-    console.log("image height = " + imageProperties.height);
-    console.log("IMAGE_TO_SCREEN_Y = " + IMAGE_TO_SCREEN_Y);
-    console.log("IMAGE_TO_SCREEN_X = " + IMAGE_TO_SCREEN_X);
-
-    return visionResp.map(item => {
-      var lineCount = 1;
-      var newCount = 0;
-      var output = [];
-      if (item.text.includes('\n')) {
-        const newItem = item;
-        while (newItem.text.includes('\n')) {
-          newItem.text = newItem.text.replace("\n", "");
-          lineCount++;
+    for (let i = 0; i < visionResp.length; i++) {
+      if (visionResp[i].text.includes('\n')) {
+        newvisionResp = cloneDeep(visionResp);
+        var lineCount = 1;
+        var lineCountForHeight = 1;
+        while (visionResp[i].text.includes('\n')) {
+          visionResp[i].text = visionResp[i].text.replace("\n", "");
+          lineCountForHeight++;
         }
-        console.log("lineCount", lineCount);
-        while (lineCount > 1) {
-          lineCount--;
-          console.log("item", item);
-          output[newCount] = this.makeLine(item, lineCount, newCount, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X);
-          console.log("output : ", output);
-          newCount++;
-          
-        }
-        return output;
-      } else {
-        return {
-          ...item,
-          position: {
-            width: item.bounding.width * IMAGE_TO_SCREEN_X,
-            left: item.bounding.left * IMAGE_TO_SCREEN_X,
-            height: item.bounding.height * IMAGE_TO_SCREEN_Y,
-            top: item.bounding.top * IMAGE_TO_SCREEN_Y
+        visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n') - 1));
+        console.log("lineCountForHeight" + lineCountForHeight);
+        while (newvisionResp[i].text.includes('\n')) {
+          newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
+          if ((newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$') - 1)))) != visionResp[i].text) {
+              console.log("newvisionResp[i].text = " + newvisionResp[i].text);
+              this.setState(prevState => ({
+                eachLine: [...prevState.eachLine, { text: (newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$') - 1)))), bounding: { height: (visionResp[i].bounding.height / lineCountForHeight), width: (visionResp[i].bounding.width), left: (visionResp[i].bounding.left), top: ((visionResp[i].bounding.top) + ((lineCount - 1) * ((visionResp[i].bounding.height) / lineCountForHeight))) } }]
+              }));
           }
-        };
-      }
+          
+          newvisionResp[i].text = newvisionResp[i].text.replace((newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('$') + 1))), "");
+          lineCount++;
 
-    });
-  };
+        }
+        this.setState(prevState => ({
+          eachLine: [...prevState.eachLine, { text: (newvisionResp[i].text), bounding: { height: (visionResp[i].bounding.height / lineCountForHeight), width: (visionResp[i].bounding.width), left: (visionResp[i].bounding.left), top: ((visionResp[i].bounding.top) + ((lineCount - 1) * ((visionResp[i].bounding.height) / lineCountForHeight))) } }]
+        }));
+        visionResp[i].bounding.height = visionResp[i].bounding.height / lineCountForHeight;
 
-  makeLine = (item, lineCount, newCount, IMAGE_TO_SCREEN_Y, IMAGE_TO_SCREEN_X) => {
-    console.log("makeLine", item);
-    return {
-      ...item,
-      position: {
-        width: item.bounding.width * IMAGE_TO_SCREEN_X,
-        left: item.bounding.left * IMAGE_TO_SCREEN_X,
-        height: item.bounding.height * IMAGE_TO_SCREEN_Y / lineCount,
-        top: item.bounding.top * IMAGE_TO_SCREEN_Y + ((item.bounding.height / lineCount  * IMAGE_TO_SCREEN_Y) * newCount)
       }
     };
-  }
+    visionResp = this.state.eachLine.concat(visionResp);
+    console.log(visionResp);
+    console.log("visionResp.length = " + visionResp.length);
 
+    return visionResp.map(item => {
+      return {
+        ...item,
+        position: {
+          width: item.bounding.width * IMAGE_TO_SCREEN_X,
+          left: item.bounding.left * IMAGE_TO_SCREEN_X,
+          height: item.bounding.height * IMAGE_TO_SCREEN_Y,
+          top: item.bounding.top * IMAGE_TO_SCREEN_Y
+        }
+      };
+    });
+  };
 
   render() {
     return (
