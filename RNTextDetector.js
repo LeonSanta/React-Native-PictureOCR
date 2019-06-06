@@ -25,8 +25,7 @@ export default class RNTextDetectorHomeScreen extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
         <TextInput
-          style={{ height: 300, borderColor: 'gray', borderWidth: 1, width: 250 }}
-          onChangeText={(imageText) => this.setState({ imageText })}
+          style={{borderColor: 'gray', borderWidth: 1, width: 250, flex: 1 }}
           value={result} 
           multiline = {true}/>
 
