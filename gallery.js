@@ -60,7 +60,6 @@ export default class gallery extends Component {
           },
           () => {
             console.log(this.state.selected[0].uri);
-
             this.processImage(this.state.selected[0].uri, {
               height: this.state.selected[0].height,
               width: this.state.selected[0].width
@@ -87,6 +86,7 @@ export default class gallery extends Component {
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
+    console.log("123123");
     for (let i = 0; i < visionResp.length; i++) {
       if (visionResp[i].text.includes('\n')) {
         newvisionResp = cloneDeep(visionResp);
@@ -96,8 +96,10 @@ export default class gallery extends Component {
           visionResp[i].text = visionResp[i].text.replace("\n", "");
           lineCountForHeight++;
         }
+         
         visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n')));
         while (newvisionResp[i].text.includes('\n')) {
+         
           newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
           if ((newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$'))))) != visionResp[i].text) {
             this.setState(prevState => ({
@@ -117,7 +119,7 @@ export default class gallery extends Component {
       }
     };
     visionResp = this.state.eachLine.concat(visionResp);
-    console.log(visionResp);
+    
 
     return visionResp.map(item => {
       return {
@@ -177,7 +179,7 @@ export default class gallery extends Component {
             source={{ uri: this.state.image }}
             style={styles.imageBackground}
             key="image"
-            resizeMode="stretch"
+            resizeMode="cover"
           >
             {this.state.visionResp.map(item => {
               return (
