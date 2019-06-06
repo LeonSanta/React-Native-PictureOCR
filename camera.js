@@ -21,14 +21,17 @@ const PICTURE_OPTIONS = {
 };
 
 export default class camera extends React.Component {
-  state = {
-    loading: false,
-    image: null,
-    error: null,
-    visionResp: [],
-    eachLine: [],
-    newVisionResp: []
-  };
+
+
+    state = {
+      loading: false,
+      image: null,
+      error: null,
+      visionResp: [],
+      eachLine: [],
+      newVisionResp: []
+    };
+
 
 
   reset(error = "OTHER") {
@@ -172,7 +175,7 @@ export default class camera extends React.Component {
               return (
                 <TouchableOpacity
                   style={[style.boundingRect, item.position]}
-                  key={item.text}
+                  key={item.text + item.bounding.top + item.bounding.left}
                   onPress={() => (alert(item.text))}
                 />
 

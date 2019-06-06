@@ -24,7 +24,9 @@ export default class gallery extends Component {
       error: null,
       visionResp: [],
       eachLine: [],
-      newVisionResp: []
+      newVisionResp: [],
+      selectResult: [],
+      toggle: true,
     }
     this.getSelectedImages = this.getSelectedImages.bind(this);
   }
@@ -130,6 +132,32 @@ export default class gallery extends Component {
     });
   };
 
+  ToggleFunction = async (inputString, position) => {
+    console.log("position = " + position);
+    this.setState(state => ({
+      toggle: !state.toggle,
+    }));
+    if (this.state.toggle) {
+      console.log("selectResult = if");
+      await this.setState(prevState => ({
+        selectResult: [...prevState.selectResult, inputString]
+      }));
+      
+    } else {
+      console.log("selectResult = else");
+
+      var array = [...this.state.selectResult]; 
+      var index = array.indexOf(inputString);
+      console.log("index = " + index);
+      if (index != -1) {
+        array.splice(index, 1);
+        await this.setState({selectResult: array});
+      };
+      
+    }
+    console.log("selectResult" , this.state.selectResult, "inputString", inputString);
+  };
+
   render() {
     return (
       <View style={styles.screen}>
@@ -154,9 +182,9 @@ export default class gallery extends Component {
             {this.state.visionResp.map(item => {
               return (
                 <TouchableOpacity
-                  style={[styles.boundingRect, item.position]}
-                  key={item.text}
-                  onPress={() => (alert(item.text))}
+                  style={[style.boundingRect, item.position]}
+                  key={item.text + item.bounding.top + item.bounding.left}
+                  onPress={() => (this.ToggleFunction(item.text, item.position))}
                 />
 
               );
@@ -170,4 +198,5 @@ export default class gallery extends Component {
 
 gallery.navigationOptions = {
   title: 'React Native Text Detector gallery',
+
 };
