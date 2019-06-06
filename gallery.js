@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ImageBackground, TouchableOpacity, Button} from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
@@ -26,7 +26,7 @@ export default class gallery extends Component {
       eachLine: [],
       newVisionResp: [],
       selectResult: [],
-      toggle: true,
+      style: []
     }
     this.getSelectedImages = this.getSelectedImages.bind(this);
   }
@@ -86,7 +86,6 @@ export default class gallery extends Component {
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
     const IMAGE_TO_SCREEN_X = screenWidth / imageProperties.width;
-    console.log("123123");
     for (let i = 0; i < visionResp.length; i++) {
       if (visionResp[i].text.includes('\n')) {
         newvisionResp = cloneDeep(visionResp);
@@ -96,10 +95,10 @@ export default class gallery extends Component {
           visionResp[i].text = visionResp[i].text.replace("\n", "");
           lineCountForHeight++;
         }
-         
+
         visionResp[i].text = newvisionResp[i].text.substring(0, (newvisionResp[i].text.indexOf('\n')));
         while (newvisionResp[i].text.includes('\n')) {
-         
+
           newvisionResp[i].text = newvisionResp[i].text.replace("\n", "$");
           if ((newvisionResp[i].text.substring(0, ((newvisionResp[i].text.indexOf('$'))))) != visionResp[i].text) {
             this.setState(prevState => ({
@@ -119,7 +118,6 @@ export default class gallery extends Component {
       }
     };
     visionResp = this.state.eachLine.concat(visionResp);
-    
 
     return visionResp.map(item => {
       return {
@@ -134,31 +132,29 @@ export default class gallery extends Component {
     });
   };
 
-  ToggleFunction = async (inputString, position) => {
-    console.log("position = " + position);
-    this.setState(state => ({
-      toggle: !state.toggle,
-    }));
-    if (this.state.toggle) {
-      console.log("selectResult = if");
+  ToggleFunction = async (inputString) => {
+    var array = [...this.state.selectResult];
+    var index = array.indexOf(inputString);
+    if (index !== -1) {
+      array.splice(index, 1);
+      await this.setState({ selectResult: array });
+      
+    } else {
       await this.setState(prevState => ({
         selectResult: [...prevState.selectResult, inputString]
       }));
-      
-    } else {
-      console.log("selectResult = else");
-
-      var array = [...this.state.selectResult]; 
-      var index = array.indexOf(inputString);
-      console.log("index = " + index);
-      if (index != -1) {
-        array.splice(index, 1);
-        await this.setState({selectResult: array});
-      };
-      
-    }
-    console.log("selectResult" , this.state.selectResult, "inputString", inputString);
+    };    
+    console.log("selectResult", this.state.selectResult);
   };
+  
+  changeStyle = function(isSelect, item) {
+    if (isSelect) {
+      return [styles.boundingRectSelect, item.position];
+    } else {
+      return  [styles.boundingRect, item.position];
+    }
+  }
+
 
   render() {
     return (
@@ -179,14 +175,14 @@ export default class gallery extends Component {
             source={{ uri: this.state.image }}
             style={styles.imageBackground}
             key="image"
-            resizeMode="cover"
+            resizeMode="stretch"
           >
             {this.state.visionResp.map(item => {
               return (
                 <TouchableOpacity
-                  style={[style.boundingRect, item.position]}
+                  style={this.changeStyle(false, item)}
                   key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (this.ToggleFunction(item.text, item.position))}
+                  onPress={() => (this.ToggleFunction(item.text))}
                 />
 
               );
@@ -196,9 +192,25 @@ export default class gallery extends Component {
       </View>
     );
   }
+  componentWillMount() {
+    this.props.navigation.setParams({ submitSelect: this._submitSelect });
+  }
+
+  _submitSelect = () => {
+    this.props.navigation.navigate('RNTextDetector', {
+      text: this.state.selectResult
+    });
+  };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "React Native Text Detector camera",
+      headerRight: (
+        <Button
+          onPress={navigation.getParam('submitSelect')}
+          title="submit">
+        </Button>
+      ),
+    };
+  };
 }
-
-gallery.navigationOptions = {
-  title: 'React Native Text Detector gallery',
-
-};

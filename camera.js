@@ -7,8 +7,8 @@
  */
 
 
-import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, ImageBackground, CameraRoll } from 'react-native';
+import React from 'react';
+import {  TouchableOpacity, View, ImageBackground, Button } from 'react-native';
 import { RNCamera as Camera } from 'react-native-camera';
 import RNTextDetector from "react-native-text-detector";
 import style, { screenHeight, screenWidth } from "./styles";
@@ -29,7 +29,9 @@ export default class camera extends React.Component {
       error: null,
       visionResp: [],
       eachLine: [],
-      newVisionResp: []
+      newVisionResp: [],
+      selectResult: [],
+      style: []
     };
 
 
@@ -136,6 +138,22 @@ export default class camera extends React.Component {
     });
   };
 
+  ToggleFunction = async (inputString) => {
+    var array = [...this.state.selectResult];
+    var index = array.indexOf(inputString);
+    if (index !== -1) {
+      array.splice(index, 1);
+      await this.setState({ selectResult: array });
+      
+    } else {
+      await this.setState(prevState => ({
+        selectResult: [...prevState.selectResult, inputString]
+      }));
+      
+    };    
+    console.log("selectResult", this.state.selectResult);
+  };
+
   render() {
     return (
       <View style={style.screen}>
@@ -176,7 +194,7 @@ export default class camera extends React.Component {
                 <TouchableOpacity
                   style={[style.boundingRect, item.position]}
                   key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (alert(item.text))}
+                  onPress={() => (this.ToggleFunction(item.text))}
                 />
 
               );
@@ -186,8 +204,25 @@ export default class camera extends React.Component {
       </View>
     );
   }
-}
-camera.navigationOptions = {
-  title: 'React Native Text Detector camera',
+  componentWillMount() {
+    this.props.navigation.setParams({ submitSelect: this._submitSelect });
+  }
 
-};
+  _submitSelect = () => {
+    this.props.navigation.navigate('RNTextDetector', {
+      text: this.state.selectResult
+    });
+  };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "React Native Text Detector camera",
+      headerRight: (
+        <Button
+          onPress={navigation.getParam('submitSelect')}
+          title="submit">
+        </Button>
+      ),
+    };
+  };
+}
