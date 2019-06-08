@@ -152,7 +152,6 @@ dependencies {
         exclude group: 'com.google.firebase'
     }
     implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation project(':react-native-tesseract-ocr')
 }
 
 // Run this once to be able to run the application with BUCK

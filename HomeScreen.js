@@ -6,18 +6,13 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation }) => (
   <View style={styles.container}>
     <Text style={styles.title}>React Native OCR</Text>
-    <View style={styles.button}>
-      <Button
-        title="React Native Tesseract OCR"
-        onPress={() => navigation.navigate('tesseract')}
-      />
-    </View>
+
     <View style={styles.button}>
       <Button
         title="React Native Text Detector OCR"

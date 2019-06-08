@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, TouchableOpacity, Button } from 'react-native';
+import {View, ImageBackground, TouchableOpacity, Button } from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";

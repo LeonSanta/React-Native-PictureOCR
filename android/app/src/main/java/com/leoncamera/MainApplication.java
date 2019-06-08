@@ -12,7 +12,6 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import org.reactnative.camera.RNCameraPackage;
 import com.fetchsky.RNTextDetector.RNTextDetectorPackage;
-import com.reactlibrary.RNTesseractOcrPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +27,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNTesseractOcrPackage(),
             new ImagePickerPackage(),
               new RNGestureHandlerPackage(),
                 new RNCameraPackage(),
