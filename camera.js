@@ -8,11 +8,12 @@
 
 
 import React from 'react';
-import {  TouchableOpacity, View, ImageBackground, Button } from 'react-native';
+import { TouchableOpacity, View, ImageBackground, Button, ToastAndroid, Alert } from 'react-native';
 import { RNCamera as Camera } from 'react-native-camera';
 import RNTextDetector from "react-native-text-detector";
 import style, { screenHeight, screenWidth } from "./styles";
 import cloneDeep from 'lodash/cloneDeep';
+import CameraRollPicker from 'react-native-camera-roll-picker';
 
 const PICTURE_OPTIONS = {
   quality: 1,
@@ -21,16 +22,16 @@ const PICTURE_OPTIONS = {
 };
 
 export default class camera extends React.Component {
-    state = {
-      loading: false,
-      image: null,
-      error: null,
-      visionResp: [],
-      eachLine: [],
-      newVisionResp: [],
-      selectResult: [],
-      style: []
-    };
+  state = {
+    loading: false,
+    image: null,
+    error: null,
+    visionResp: [],
+    eachLine: [],
+    newVisionResp: [],
+    selectResult: [],
+    style: []
+  };
 
   reset(error = "OTHER") {
     this.setState(
@@ -55,6 +56,7 @@ export default class camera extends React.Component {
       if (!data.uri) {
         throw "OTHER";
       }
+      //CameraRoll.saveToCameraRoll(data.uri);
       this.setState(
         {
           image: data.uri
@@ -132,19 +134,33 @@ export default class camera extends React.Component {
     });
   };
 
+  alertText = async (selectText) => {
+    await Alert.alert('text', selectText,
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Ok', onPress: () => this.props.navigation.navigate('RNTextDetector', {
+            text: selectText
+          }),
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
   ToggleFunction = async (inputString) => {
     var array = [...this.state.selectResult];
     var index = array.indexOf(inputString);
     if (index !== -1) {
       array.splice(index, 1);
       await this.setState({ selectResult: array });
-      alert(array + "\n Has removed from result");
+      await ToastAndroid.show(inputString + "\n Has removed from result", ToastAndroid.SHORT);
     }
     else {
       await this.setState(prevState => ({
         selectResult: [...prevState.selectResult, inputString]
       }));
-      alert(array + "\n Has Add to result");
+      await ToastAndroid.show(inputString + "\n Has Add to result", ToastAndroid.SHORT);
     };
     console.log("selectResult", this.state.selectResult);
   }
@@ -189,7 +205,8 @@ export default class camera extends React.Component {
                 <TouchableOpacity
                   style={[style.boundingRect, item.position]}
                   key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (this.ToggleFunction(item.text))}
+                  onPress={() => (this.alertText(item.text))}
+                  //onPress={() => (this.ToggleFunction(item.text))} for select mutipleLines
                 />
 
               );

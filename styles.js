@@ -52,15 +52,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
+    borderWidth: 0.75,
     borderColor: "#FF6600"
-  },
-  boundingRectSelect: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "#FFFFFF"
   },
   container: {
     flex: 1,

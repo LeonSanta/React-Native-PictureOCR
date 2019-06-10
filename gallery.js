@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, ImageBackground, TouchableOpacity, Button } from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Button, ToastAndroid, Alert } from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
@@ -132,19 +132,33 @@ export default class gallery extends Component {
     });
   };
 
+  alertText = async (selectText) => {
+    await Alert.alert('text', selectText,
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Ok', onPress: () => this.props.navigation.navigate('RNTextDetector', {
+            text: selectText
+          }),
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
   ToggleFunction = async (inputString) => {
     var array = [...this.state.selectResult];
     var index = array.indexOf(inputString);
     if (index !== -1) {
       array.splice(index, 1);
       await this.setState({ selectResult: array });
-      alert(array + "\n Has removed from result");
+      await ToastAndroid.show(inputString + "\n Has removed from result", ToastAndroid.SHORT);
     }
     else {
       await this.setState(prevState => ({
         selectResult: [...prevState.selectResult, inputString]
       }));
-      alert(array + "\n Has Add to result");
+      await ToastAndroid.show(inputString + "\n Has Add to result", ToastAndroid.SHORT);
     };
     console.log("selectResult", this.state.selectResult);
   }
@@ -175,7 +189,7 @@ export default class gallery extends Component {
                 <TouchableOpacity
                   style={[styles.boundingRect, item.position]}
                   key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (this.ToggleFunction(item.text))}
+                  onPress={() => (this.alertText(item.text))}
                 />
 
               );
@@ -187,10 +201,10 @@ export default class gallery extends Component {
   }
 
   componentWillMount() {
-    this.props.navigation.setParams({ submitSelect: this._submitSelect });
+    this.props.navigation.setParams({ submitSelect: this.submitSelect });
   }
 
-  _submitSelect = () => {
+  submitSelect = () => {
     this.props.navigation.navigate('RNTextDetector', {
       text: this.state.selectResult
     });

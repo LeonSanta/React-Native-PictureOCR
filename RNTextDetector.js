@@ -42,13 +42,13 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     const imageText = this.props.navigation.getParam('text', '');
     this.state.result = "";
     for (let i =0 ; i < imageText.length ; i++) {
-      this.state.result += imageText[i] + '\n';
+      this.state.result += imageText[i] ;
     }
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
         <TextInput
-          style={{borderColor: 'gray', borderWidth: 1, width: 250, flex: 1 }}
+          style={{borderColor: 'gray', borderWidth: 1, width: 250 }}
           value={this.state.result} 
           multiline = {true}/>
 
