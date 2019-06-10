@@ -21,8 +21,6 @@ const PICTURE_OPTIONS = {
 };
 
 export default class camera extends React.Component {
-
-
     state = {
       loading: false,
       image: null,
@@ -33,8 +31,6 @@ export default class camera extends React.Component {
       selectResult: [],
       style: []
     };
-
-
 
   reset(error = "OTHER") {
     this.setState(
@@ -55,7 +51,6 @@ export default class camera extends React.Component {
     });
     try {
       const data = await camera.takePictureAsync(PICTURE_OPTIONS);
-      console.log("height = " + data.height);
 
       if (!data.uri) {
         throw "OTHER";
@@ -88,7 +83,6 @@ export default class camera extends React.Component {
       visionResp: this.mapVisionRespToScreen(visionResp, imageProperties)
     });
   };
-
 
   mapVisionRespToScreen = (visionResp, imageProperties) => {
     const IMAGE_TO_SCREEN_Y = screenHeight / imageProperties.height;
@@ -144,15 +138,16 @@ export default class camera extends React.Component {
     if (index !== -1) {
       array.splice(index, 1);
       await this.setState({ selectResult: array });
-      
-    } else {
+      alert(array + "\n Has removed from result");
+    }
+    else {
       await this.setState(prevState => ({
         selectResult: [...prevState.selectResult, inputString]
       }));
-      
-    };    
+      alert(array + "\n Has Add to result");
+    };
     console.log("selectResult", this.state.selectResult);
-  };
+  }
 
   render() {
     return (
@@ -205,10 +200,10 @@ export default class camera extends React.Component {
     );
   }
   componentWillMount() {
-    this.props.navigation.setParams({ submitSelect: this._submitSelect });
+    this.props.navigation.setParams({ submitSelect: this.submitSelect });
   }
 
-  _submitSelect = () => {
+  submitSelect = () => {
     this.props.navigation.navigate('RNTextDetector', {
       text: this.state.selectResult
     });

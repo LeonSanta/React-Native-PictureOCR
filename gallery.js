@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import {View, ImageBackground, TouchableOpacity, Button } from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Button } from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
@@ -31,6 +31,7 @@ export default class gallery extends Component {
     this.getSelectedImages = this.getSelectedImages.bind(this);
   }
 
+
   reset(error = "OTHER") {
     this.setState(
       {
@@ -43,7 +44,6 @@ export default class gallery extends Component {
       }
     );
   }
-
 
   async getSelectedImages(images, current) {
     var num = images.length;
@@ -138,72 +138,73 @@ export default class gallery extends Component {
     if (index !== -1) {
       array.splice(index, 1);
       await this.setState({ selectResult: array });
-    
+      alert(array + "\n Has removed from result");
+    }
+    else {
+      await this.setState(prevState => ({
+        selectResult: [...prevState.selectResult, inputString]
+      }));
+      alert(array + "\n Has Add to result");
+    };
+    console.log("selectResult", this.state.selectResult);
   }
- else {
-  await this.setState(prevState => ({
-    selectResult: [...prevState.selectResult, inputString]
-  }));
-};
-console.log("selectResult", this.state.selectResult);
+
+  render() {
+    return (
+      <View style={styles.screen}>
+        {!this.state.image ? (
+          <CameraRollPicker
+            groupTypes='SavedPhotos'
+            assetType='Photos'
+            maximum={1}
+            selected={this.state.selected}
+            imagesPerRow={3}
+            imageMargin={5}
+            callback={this.getSelectedImages}>
+          </CameraRollPicker>
+        ) : null}
+        {this.state.image ? (
+          <ImageBackground
+            source={{ uri: this.state.image }}
+            style={styles.imageBackground}
+            key="image"
+            resizeMode="stretch"
+          >
+            {this.state.visionResp.map(item => {
+              return (
+                <TouchableOpacity
+                  style={[styles.boundingRect, item.position]}
+                  key={item.text + item.bounding.top + item.bounding.left}
+                  onPress={() => (this.ToggleFunction(item.text))}
+                />
+
+              );
+            })}
+          </ImageBackground>
+        ) : null}
+      </View>
+    );
   }
 
+  componentWillMount() {
+    this.props.navigation.setParams({ submitSelect: this._submitSelect });
+  }
 
-render() {
-  return (
-    <View style={styles.screen}>
-      {!this.state.image ? (
-        <CameraRollPicker
-          groupTypes='SavedPhotos'
-          assetType='Photos'
-          maximum={1}
-          selected={this.state.selected}
-          imagesPerRow={3}
-          imageMargin={5}
-          callback={this.getSelectedImages}>
-        </CameraRollPicker>
-      ) : null}
-      {this.state.image ? (
-        <ImageBackground
-          source={{ uri: this.state.image }}
-          style={styles.imageBackground}
-          key="image"
-          resizeMode="stretch"
-        >
-          {this.state.visionResp.map(item => {
-            return (
-              <TouchableOpacity
-                style={[styles.boundingRect, item.position]}
-                key={item.text + item.bounding.top + item.bounding.left}
-                onPress={() => (this.ToggleFunction(item.text))}
-              />
-
-            );
-          })}
-        </ImageBackground>
-      ) : null}
-    </View>
-  );
-}
-componentWillMount() {
-  this.props.navigation.setParams({ submitSelect: this._submitSelect });
-}
-
-_submitSelect = () => {
-  this.props.navigation.navigate('RNTextDetector', {
-    text: this.state.selectResult
-  });
-};
+  _submitSelect = () => {
+    this.props.navigation.navigate('RNTextDetector', {
+      text: this.state.selectResult
+    });
+  };
 
   static navigationOptions = ({ navigation }) => {
-  return {
-    headerTitle: "React Native Text Detector camera",
-    headerRight: (
-      <Button
-        onPress={navigation.getParam('submitSelect')}
-        title="submit">
-      </Button>
-    ),
+    return {
+      headerTitle: "React Native Text Detector camera",
+      headerRight: (
+        <Button
+          onPress={navigation.getParam('submitSelect')}
+          title="submit">
+        </Button>
+      ),
+    };
   };
-};
 }

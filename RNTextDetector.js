@@ -6,27 +6,50 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
+import React from 'react';
+import { Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
-export default class RNTextDetectorHomeScreen extends Component {
+export default class RNTextDetectorHomeScreen extends React.Component {
   state = {
-    imageText: []
+    imageText: [],
+    result: ""
   }
+
+  
+  async requestReadPermissionGallery() {
+    try {
+      const os = Platform.OS; // android or ios
+      console.log("123123" + os);
+      if (os === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // 已獲取了讀寫權限
+          this.props.navigation.navigate('gallery');
+          this.getPhotos();
+        } else {
+          // 獲取讀寫權限失敗
+        }
+      }
+    } catch (err) {
+      console.log(err.toString());
+    }
+  }
+
   render() {
     const imageText = this.props.navigation.getParam('text', '');
-    console.log("imageText = ", imageText[0]);
-    var result = "";
+    this.state.result = "";
     for (let i =0 ; i < imageText.length ; i++) {
-      result = result + imageText[i] + '\n';
+      this.state.result += imageText[i] + '\n';
     }
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
         <TextInput
           style={{borderColor: 'gray', borderWidth: 1, width: 250, flex: 1 }}
-          value={result} 
+          value={this.state.result} 
           multiline = {true}/>
 
         <Button
@@ -35,7 +58,7 @@ export default class RNTextDetectorHomeScreen extends Component {
         />
         <Button
           title="open gallery"
-          onPress={() => this.props.navigation.navigate('gallery')}
+          onPress={ this.requestReadPermissionGallery.bind(this)}
         />
 
       </View>
