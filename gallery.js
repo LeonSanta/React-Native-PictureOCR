@@ -193,8 +193,8 @@ export default class gallery extends Component {
                   <TouchableOpacity
                     style={[styles.boundingRect, item.position]}
                     key={item.text + item.bounding.top + item.bounding.left}
-                    //onPress={() => (this.ToggleFunction(item.text)) for muti selection
-                    onPress={() => (this.alertText(item.text))}
+                    onPress={() => (this.ToggleFunction(item.text))} //for muti selection
+                    //onPress={() => (this.alertText(item.text))}
                   />
 
                 );

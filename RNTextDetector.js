@@ -42,7 +42,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     const imageText = this.props.navigation.getParam('text', '');
     this.state.result = "";
     for (let i =0 ; i < imageText.length ; i++) {
-      this.state.result += imageText[i] ;
+      this.state.result += imageText[i] + '\n';
     }
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
