@@ -118,7 +118,7 @@ export default class gallery extends Component {
       }
     };
     visionResp = this.state.eachLine.concat(visionResp);
-
+    console.log(visionResp);
     return visionResp.map(item => {
       return {
         ...item,
@@ -144,6 +144,7 @@ export default class gallery extends Component {
       ],
       { cancelable: false },
     );
+    console.log("selectText", selectText);
   }
 
   ToggleFunction = async (inputString) => {

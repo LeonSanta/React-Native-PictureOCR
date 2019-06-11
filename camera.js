@@ -146,6 +146,7 @@ export default class camera extends React.Component {
       ],
       { cancelable: false },
     );
+    console.log("selectResult", this.state.selectResult);
   }
 
   ToggleFunction = async (inputString) => {
