@@ -16,7 +16,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     result: ""
   }
 
-  
+
   async requestReadPermissionGallery() {
     try {
       const os = Platform.OS; // android or ios
@@ -40,17 +40,22 @@ export default class RNTextDetectorHomeScreen extends React.Component {
 
   render() {
     const imageText = this.props.navigation.getParam('text', '');
+    console.log("image text = ", imageText);
+
     this.state.result = "";
-    for (let i =0 ; i < imageText.length ; i++) {
+    for (let i = 0; i < imageText.length; i++) {
       this.state.result += imageText[i] + '\n';
     }
+    
+   console.log("render ");
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
         <TextInput
-          style={{borderColor: 'gray', borderWidth: 1, width: 250 }}
-          value={this.state.result} 
-          multiline = {true}/>
+          style={{ borderColor: 'gray', borderWidth: 1, width: 250 }}
+          value={this.state.result}
+          multiline={true} />
 
         <Button
           title="open camera"
@@ -58,7 +63,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
         />
         <Button
           title="open gallery"
-          onPress={ this.requestReadPermissionGallery.bind(this)}
+          onPress={this.requestReadPermissionGallery.bind(this)}
         />
 
       </View>
