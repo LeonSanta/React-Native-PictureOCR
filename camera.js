@@ -8,12 +8,12 @@
 
 
 import React from 'react';
-import { TouchableOpacity, View, ImageBackground, Button, ToastAndroid, Alert } from 'react-native';
+import { TouchableOpacity, View, ImageBackground, Button, ToastAndroid, Alert, SafeAreaView } from 'react-native';
 import { RNCamera as Camera } from 'react-native-camera';
 import RNTextDetector from "react-native-text-detector";
 import style, { screenHeight, screenWidth } from "./styles";
 import cloneDeep from 'lodash/cloneDeep';
-import CameraRollPicker from 'react-native-camera-roll-picker';
+//import CameraRollPicker from 'react-native-camera-roll-picker';
 
 const PICTURE_OPTIONS = {
   quality: 1,
@@ -56,7 +56,7 @@ export default class camera extends React.Component {
       if (!data.uri) {
         throw "OTHER";
       }
-      //CameraRoll.saveToCameraRoll(data.uri);
+      //CameraRoll.saveToCameraRoll(data.uri); save picture to phone
       this.setState(
         {
           image: data.uri
@@ -167,53 +167,56 @@ export default class camera extends React.Component {
 
   render() {
     return (
-      <View style={style.screen}>
-        {!this.state.image ? (
-          <Camera
-            ref={cam => {
-              this.camera = cam;
-            }}
-            key="camera"
-            style={style.camera}
-            notAuthorizedView={null}
-            flashMode={Camera.Constants.FlashMode.off}
-          >
-            {({ camera, status }) => {
-              if (status !== "READY") {
-                return null;
-              }
-              return (
-                <View style={style.buttonContainer}>
-                  <TouchableOpacity
-                    onPress={() => this.takePicture(camera)}
-                    style={style.button}
-                  />
-                </View>
-              );
-            }}
-          </Camera>
-        ) : null}
-        {this.state.image ? (
-          <ImageBackground
-            source={{ uri: this.state.image }}
-            style={style.imageBackground}
-            key="image"
-            resizeMode="stretch"
-          >
-            {this.state.visionResp.map(item => {
-              return (
-                <TouchableOpacity
-                  style={[style.boundingRect, item.position]}
-                  key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (this.alertText(item.text))}
-                  //onPress={() => (this.ToggleFunction(item.text))} for select mutipleLines
-                />
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 
-              );
-            })}
-          </ImageBackground>
-        ) : null}
-      </View>
+        <View style={style.screen}>
+            {!this.state.image ? (
+              <Camera
+                ref={cam => {
+                  this.camera = cam;
+                }}
+                key="camera"
+                style={style.camera}
+                notAuthorizedView={null}
+                flashMode={Camera.Constants.FlashMode.off}
+              >
+                {({ camera, status }) => {
+                  if (status !== "READY") {
+                    return null;
+                  }
+                  return (
+                    <View style={style.buttonContainer}>
+                      <TouchableOpacity
+                        onPress={() => this.takePicture(camera)}
+                        style={style.button}
+                      />
+                    </View>
+                  );
+                }}
+              </Camera>
+            ) : null}
+            {this.state.image ? (
+              <ImageBackground
+                source={{ uri: this.state.image }}
+                style={style.imageBackground}
+                key="image"
+                resizeMode="stretch"
+              >
+                {this.state.visionResp.map(item => {
+                  return (
+                    <TouchableOpacity
+                      style={[style.boundingRect, item.position]}
+                      key={item.text + item.bounding.top + item.bounding.left}
+                      onPress={() => (this.alertText(item.text))}
+                    //onPress={() => (this.ToggleFunction(item.text))} for muti selection
+                    />
+
+                  );
+                })}
+              </ImageBackground>
+            ) : null}
+          </View>
+      </SafeAreaView>
     );
   }
   componentWillMount() {

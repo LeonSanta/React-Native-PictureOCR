@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, ImageBackground, TouchableOpacity, Button, ToastAndroid, Alert } from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Button, ToastAndroid, Alert, SafeAreaView } from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
@@ -165,38 +165,43 @@ export default class gallery extends Component {
 
   render() {
     return (
-      <View style={styles.screen}>
-        {!this.state.image ? (
-          <CameraRollPicker
-            groupTypes='SavedPhotos'
-            assetType='Photos'
-            maximum={1}
-            selected={this.state.selected}
-            imagesPerRow={3}
-            imageMargin={5}
-            callback={this.getSelectedImages}>
-          </CameraRollPicker>
-        ) : null}
-        {this.state.image ? (
-          <ImageBackground
-            source={{ uri: this.state.image }}
-            style={styles.imageBackground}
-            key="image"
-            resizeMode="stretch"
-          >
-            {this.state.visionResp.map(item => {
-              return (
-                <TouchableOpacity
-                  style={[styles.boundingRect, item.position]}
-                  key={item.text + item.bounding.top + item.bounding.left}
-                  onPress={() => (this.alertText(item.text))}
-                />
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
 
-              );
-            })}
-          </ImageBackground>
-        ) : null}
-      </View>
+        <View style={styles.screen}>
+
+          {!this.state.image ? (
+            <CameraRollPicker
+              groupTypes='SavedPhotos'
+              assetType='Photos'
+              maximum={1}
+              selected={this.state.selected}
+              imagesPerRow={3}
+              imageMargin={5}
+              callback={this.getSelectedImages}>
+            </CameraRollPicker>
+          ) : null}
+          {this.state.image ? (
+            <ImageBackground
+              source={{ uri: this.state.image }}
+              style={styles.imageBackground}
+              key="image"
+              resizeMode="stretch"
+            >
+              {this.state.visionResp.map(item => {
+                return (
+                  <TouchableOpacity
+                    style={[styles.boundingRect, item.position]}
+                    key={item.text + item.bounding.top + item.bounding.left}
+                    //onPress={() => (this.ToggleFunction(item.text)) for muti selection
+                    onPress={() => (this.alertText(item.text))}
+                  />
+
+                );
+              })}
+            </ImageBackground>
+          ) : null}
+        </View>
+      </SafeAreaView>
     );
   }
 
