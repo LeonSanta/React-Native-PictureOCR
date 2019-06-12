@@ -30,6 +30,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
           this.props.navigation.navigate('gallery');
           this.getPhotos();
         } else {
+          alert("Permissions Fail");
           // 獲取讀寫權限失敗
         }
       }
@@ -47,7 +48,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
       this.state.result += imageText[i] + '\n';
     }
     
-   console.log("render ");
+   console.log("RNTextDetector render ");
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

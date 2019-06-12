@@ -17,16 +17,13 @@ export default class gallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      num: 0,
       selected: [],
       loading: false,
       image: null,
-      error: null,
       visionResp: [],
       eachLine: [],
       newVisionResp: [],
-      selectResult: [],
-      style: []
+      selectResult: []
     }
     this.getSelectedImages = this.getSelectedImages.bind(this);
   }
@@ -36,19 +33,13 @@ export default class gallery extends Component {
     this.setState(
       {
         loading: false,
-        image: null,
-        error
-      },
-      () => {
-        // setTimeout(() => this.camera.startPreview(), 500);
+        image: null
       }
     );
   }
 
-  async getSelectedImages(images, current) {
-    var num = images.length;
+  async getSelectedImages(images) {
     this.setState({
-      num: num,
       selected: images,
       loading: true
     });
@@ -116,7 +107,7 @@ export default class gallery extends Component {
         visionResp[i].bounding.height = visionResp[i].bounding.height / lineCountForHeight;
 
       }
-    };
+    }
     visionResp = this.state.eachLine.concat(visionResp);
     console.log(visionResp);
     return visionResp.map(item => {
@@ -194,7 +185,7 @@ export default class gallery extends Component {
                     style={[styles.boundingRect, item.position]}
                     key={item.text + item.bounding.top + item.bounding.left}
                     onPress={() => (this.ToggleFunction(item.text))} //for muti selection
-                    //onPress={() => (this.alertText(item.text))}
+                  //onPress={() => (this.alertText(item.text))}
                   />
 
                 );
