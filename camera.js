@@ -208,8 +208,8 @@ export default class camera extends React.Component {
                     <TouchableOpacity
                       style={[style.boundingRect, item.position]}
                       key={item.text + item.bounding.top + item.bounding.left}
-                      onPress={() => (this.alertText(item.text))}
-                    //onPress={() => (this.ToggleFunction(item.text))} for muti selection
+                      //onPress={() => (this.alertText(item.text))}
+                    onPress={() => (this.ToggleFunction(item.text))} for muti selection
                     />
 
                   );

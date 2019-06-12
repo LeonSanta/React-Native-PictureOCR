@@ -45,7 +45,7 @@ export default class RNTextDetectorHomeScreen extends React.Component {
 
     this.state.result = "";
     for (let i = 0; i < imageText.length; i++) {
-      this.state.result += imageText[i] + '\n';
+      this.state.result += imageText[i];
     }
     
    console.log("RNTextDetector render ");
