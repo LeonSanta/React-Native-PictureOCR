@@ -9,6 +9,12 @@
 import React from 'react';
 import { Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
 
 export default class RNTextDetectorHomeScreen extends React.Component {
   state = {
@@ -47,8 +53,8 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     for (let i = 0; i < imageText.length; i++) {
       this.state.result += imageText[i] + '\n';
     }
-    
-   console.log("RNTextDetector render ");
+
+    console.log("RNTextDetector render ");
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -66,7 +72,19 @@ export default class RNTextDetectorHomeScreen extends React.Component {
           title="open gallery"
           onPress={this.requestReadPermissionGallery.bind(this)}
         />
-
+        <AdMobBanner
+          adSize="fullBanner"
+          adUnitID="ca-app-pub-6806282339237533/8293842353"
+          testDevices={[AdMobBanner.simulatorId]}
+          onAdFailedToLoad={error => console.error(error)}
+        />
+        <PublisherBanner
+          adSize="fullBanner"
+          adUnitID="ca-app-pub-6806282339237533/8293842353"
+          testDevices={[PublisherBanner.simulatorId]}
+          onAdFailedToLoad={error => console.error(error)}
+          onAppEvent={event => console.log(event.name, event.info)}
+        />
       </View>
     );
   }
