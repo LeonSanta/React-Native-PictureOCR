@@ -16,8 +16,4 @@
 #   public *;
 #}
 
-<<<<<<< HEAD
--dontwarn com.**.**
-=======
--dontwarn  com.**.**
->>>>>>> 0a5569ba8436977f73e8415d5c92578a461943c0
+-dontwarn ***.**.**
