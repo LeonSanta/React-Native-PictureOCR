@@ -5,7 +5,7 @@
  * @format
  * @flow
  */
-
+import firebase from 'react-native-firebase';
 import React from 'react';
 import { Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -20,7 +20,6 @@ export default class RNTextDetectorHomeScreen extends React.Component {
   async requestReadPermissionGallery() {
     try {
       const os = Platform.OS; // android or ios
-      console.log("123123" + os);
       if (os === 'android') {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
@@ -40,6 +39,19 @@ export default class RNTextDetectorHomeScreen extends React.Component {
   }
 
   render() {
+    //const advert = firebase.admob().interstitial('ca-app-pub-6806282339237533/1168663826');
+    const Banner = firebase.admob.Banner;
+    const AdRequest = firebase.admob.AdRequest;
+    const request = new AdRequest();
+    //ca-app-pub-3940256099942544/6300978111 test
+
+    const unitId =
+      Platform.OS === 'ios'
+        ? 'ca-app-pub-6806282339237533/1168663826'
+        : 'ca-app-pub-6806282339237533/1168663826';
+
+
+
     const imageText = this.props.navigation.getParam('text', '');
     console.log("image text = ", imageText);
 
@@ -47,8 +59,10 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     for (let i = 0; i < imageText.length; i++) {
       this.state.result += imageText[i] + '\n';
     }
-    
-   console.log("RNTextDetector render ");
+
+    console.log("RNTextDetector render ");
+
+
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -61,6 +75,14 @@ export default class RNTextDetectorHomeScreen extends React.Component {
         <Button
           title="open camera"
           onPress={() => this.props.navigation.navigate('Camera')}
+        />
+        <Banner
+          unitId={unitId}
+          size={'SMART_BANNER'}
+          request={request.build()}
+          onAdLoaded={() => {
+            console.log('Advert loaded');
+          }}
         />
         <Button
           title="open gallery"

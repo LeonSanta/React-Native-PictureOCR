@@ -16,4 +16,4 @@
 #   public *;
 #}
 
--ignorewarnings
+-dontwarn com.**.**

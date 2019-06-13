@@ -3,6 +3,8 @@ package com.leoncamera;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -12,6 +14,9 @@ import org.reactnative.camera.RNCameraPackage;
 import com.fetchsky.RNTextDetector.RNTextDetectorPackage;
 import java.util.Arrays;
 import java.util.List;
+import io.invertase.firebase.admob.RNFirebaseAdMobPackage;
+import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -25,9 +30,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
               new RNGestureHandlerPackage(),
                 new RNCameraPackage(),
-                  new RNTextDetectorPackage()
+                  new RNTextDetectorPackage(),
+                      new RNFirebaseAdMobPackage(),
+                       new RNFirebaseAnalyticsPackage()
       );
     }
 
@@ -45,6 +53,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    MobileAds.initialize(this, "ca-app-pub-6806282339237533~8148881430");
     SoLoader.init(this, /* native exopackage */ false);
   }
+
 }

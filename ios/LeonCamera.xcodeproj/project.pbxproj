@@ -45,6 +45,8 @@
 		8AC9C697FAA143829CE7E8B6 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6B88005A1243DFAE23C8F3 /* libRNImagePicker.a */; };
 		8CD42A64865642E29FFCA076 /* libRNTesseractOcr.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF56C1ED95641A188C4BC33 /* libRNTesseractOcr.a */; };
 		E349F8570AAB4F07AEF957AD /* libRNTextDetector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F811E63D37442EA11DF329 /* libRNTextDetector.a */; };
+		7AAE0183E585489BA5BAC150 /* libRNAdMobManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4D53ED4EB74FDC938599B3 /* libRNAdMobManager.a */; };
+		04F32EE317644A6E90C1D897 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FBB8DB8B834A38A5266936 /* libRNFirebase.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,6 +365,10 @@
 		DFF56C1ED95641A188C4BC33 /* libRNTesseractOcr.a */ = {isa = PBXFileReference; name = "libRNTesseractOcr.a"; path = "libRNTesseractOcr.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		031CA35BE58C4BF6871F6A21 /* RNTextDetector.xcodeproj */ = {isa = PBXFileReference; name = "RNTextDetector.xcodeproj"; path = "../node_modules/react-native-text-detector/ios/RNTextDetector.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		B1F811E63D37442EA11DF329 /* libRNTextDetector.a */ = {isa = PBXFileReference; name = "libRNTextDetector.a"; path = "libRNTextDetector.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		72E05AB867B742EEA9773CA3 /* RNAdMobManager.xcodeproj */ = {isa = PBXFileReference; name = "RNAdMobManager.xcodeproj"; path = "../node_modules/react-native-admob/ios/RNAdMobManager.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		CC4D53ED4EB74FDC938599B3 /* libRNAdMobManager.a */ = {isa = PBXFileReference; name = "libRNAdMobManager.a"; path = "libRNAdMobManager.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		637C36DDBAD140A3BF883978 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A8FBB8DB8B834A38A5266936 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +402,8 @@
 				8AC9C697FAA143829CE7E8B6 /* libRNImagePicker.a in Frameworks */,
 				8CD42A64865642E29FFCA076 /* libRNTesseractOcr.a in Frameworks */,
 				E349F8570AAB4F07AEF957AD /* libRNTextDetector.a in Frameworks */,
+				7AAE0183E585489BA5BAC150 /* libRNAdMobManager.a in Frameworks */,
+				04F32EE317644A6E90C1D897 /* libRNFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +599,8 @@
 				ED3EEA0E57E342E2AA808AEB /* RNImagePicker.xcodeproj */,
 				A66995391FE6430295ACCFB9 /* RNTesseractOcr.xcodeproj */,
 				031CA35BE58C4BF6871F6A21 /* RNTextDetector.xcodeproj */,
+				72E05AB867B742EEA9773CA3 /* RNAdMobManager.xcodeproj */,
+				637C36DDBAD140A3BF883978 /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1220,10 +1230,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1232,6 +1238,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1255,10 +1263,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1267,6 +1271,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1294,6 +1300,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1320,6 +1328,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1351,10 +1361,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1363,6 +1369,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1394,10 +1402,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1406,6 +1410,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1436,10 +1442,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1448,6 +1450,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1478,10 +1482,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1490,6 +1490,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-image-picker\ios",
 					"$(SRCROOT)\..\node_modules\react-native-tesseract-ocr\ios",
 					"$(SRCROOT)\..\node_modules\react-native-text-detector\ios",
+					"$(SRCROOT)\..\node_modules\react-native-admob\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
