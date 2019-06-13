@@ -18,6 +18,7 @@ import io.invertase.firebase.admob.RNFirebaseAdMobPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import com.google.android.gms.ads.MobileAds;
 
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -55,6 +56,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     MobileAds.initialize(this, "ca-app-pub-6806282339237533~8148881430");
     SoLoader.init(this, /* native exopackage */ false);
+
   }
 
 }
