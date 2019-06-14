@@ -5,9 +5,9 @@
  * @format
  * @flow
  */
-
+import firebase from 'react-native-firebase';
 import React, { Component } from 'react';
-import { View, ImageBackground, TouchableOpacity, Button, ToastAndroid, Alert, SafeAreaView } from 'react-native';
+import { View, ImageBackground, TouchableOpacity, Button, ToastAndroid, Alert, SafeAreaView, Platform} from 'react-native';
 import RNTextDetector from "react-native-text-detector";
 import CameraRollPicker from 'react-native-camera-roll-picker';
 import styles, { screenHeight, screenWidth } from "./styles";
@@ -199,6 +199,22 @@ export default class gallery extends Component {
 
   componentWillMount() {
     this.props.navigation.setParams({ submitSelect: this.submitSelect });
+  }
+  
+  componentDidMount() {
+    const unitId =
+      Platform.OS === 'ios'
+        ? 'ca-app-pub-6806282339237533/7962615966'
+        : 'ca-app-pub-6806282339237533/7962615966';
+    const advert = firebase.admob().interstitial(unitId);
+    const AdRequest = firebase.admob.AdRequest;
+    const request = new AdRequest();
+    advert.loadAd(request.build());
+  
+    advert.on('onAdLoaded', () => {
+      console.log('Advert ready to show.');
+      advert.show();
+    });
   }
 
   submitSelect = () => {

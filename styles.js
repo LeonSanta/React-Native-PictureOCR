@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  button: {
+  circle: {
     width: 64,
     height: 64,
     backgroundColor: Colors.white,
@@ -76,6 +76,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center',
     margin: 20,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10
+  },
+  ad: {
+    position: 'absolute',
+    bottom:0
   }
 });
 
