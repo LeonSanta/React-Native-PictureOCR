@@ -227,8 +227,8 @@ export default class camera extends React.Component {
   componentDidMount() {
     const unitId =
       Platform.OS === 'ios'
-        ? 'ca-app-pub-6806282339237533/7962615966'
-        : 'ca-app-pub-6806282339237533/7962615966';
+        ? 'ca-app-pub-6806282339237533/3313936273'
+        : 'ca-app-pub-6806282339237533/3313936273';
     const advert = firebase.admob().interstitial(unitId);
     const AdRequest = firebase.admob.AdRequest;
     const request = new AdRequest();
