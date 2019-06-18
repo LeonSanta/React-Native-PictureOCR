@@ -105,8 +105,9 @@ android {
         applicationId "com.leoncamera"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.2"
+
+        versionCode 7
+        versionName "2.3"
 		missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
 
