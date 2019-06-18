@@ -6,9 +6,9 @@
  * @flow
  */
 
-
+import firebase from 'react-native-firebase';
 import React from 'react';
-import { TouchableOpacity, View, ImageBackground, Button, ToastAndroid, Alert, SafeAreaView } from 'react-native';
+import { TouchableOpacity, View, ImageBackground, Button, ToastAndroid, Alert, SafeAreaView,  Platform} from 'react-native';
 import { RNCamera as Camera } from 'react-native-camera';
 import RNTextDetector from "react-native-text-detector";
 import style, { screenHeight, screenWidth } from "./styles";
@@ -189,7 +189,7 @@ export default class camera extends React.Component {
                     <View style={style.buttonContainer}>
                       <TouchableOpacity
                         onPress={() => this.takePicture(camera)}
-                        style={style.button}
+                        style={style.circle}
                       />
                     </View>
                   );
@@ -222,6 +222,22 @@ export default class camera extends React.Component {
   }
   componentWillMount() {
     this.props.navigation.setParams({ submitSelect: this.submitSelect });
+  }
+
+  componentDidMount() {
+    const unitId =
+      Platform.OS === 'ios'
+        ? 'ca-app-pub-6806282339237533/7962615966'
+        : 'ca-app-pub-6806282339237533/7962615966';
+    const advert = firebase.admob().interstitial(unitId);
+    const AdRequest = firebase.admob.AdRequest;
+    const request = new AdRequest();
+    advert.loadAd(request.build());
+  
+    advert.on('onAdLoaded', () => {
+      console.log('Advert ready to show.');
+      advert.show();
+    });
   }
 
   submitSelect = () => {

@@ -9,6 +9,7 @@ import firebase from 'react-native-firebase';
 import React from 'react';
 import { Text, View, Button, PermissionsAndroid, Platform } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import styles from './styles';
 
 
 export default class RNTextDetectorHomeScreen extends React.Component {
@@ -39,20 +40,32 @@ export default class RNTextDetectorHomeScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const unitId =
+      Platform.OS === 'ios'
+        ? 'ca-app-pub-6806282339237533/7962615966'
+        : 'ca-app-pub-6806282339237533/7962615966';
+    const advert = firebase.admob().interstitial(unitId);
+    const AdRequest = firebase.admob.AdRequest;
+    const request = new AdRequest();
+    advert.loadAd(request.build());
+  
+    advert.on('onAdLoaded', () => {
+      console.log('Advert ready to show.');
+      advert.show();
+    });
+  }
+
   render() {
-    //const advert = firebase.admob().interstitial('ca-app-pub-6806282339237533/1168663826');
     const Banner = firebase.admob.Banner;
     const AdRequest = firebase.admob.AdRequest;
     const request = new AdRequest();
     //ca-app-pub-3940256099942544/6300978111 test
-
     const unitId =
       Platform.OS === 'ios'
         ? 'ca-app-pub-6806282339237533/1168663826'
         : 'ca-app-pub-6806282339237533/1168663826';
-
-
-
+        
     const imageText = this.props.navigation.getParam('text', '');
     console.log("image text = ", imageText);
 
@@ -74,7 +87,13 @@ export default class RNTextDetectorHomeScreen extends React.Component {
           title="open camera"
           onPress={() => this.props.navigation.navigate('Camera')}
         />
+
+        <Button
+          title="open gallery"
+          onPress={this.requestReadPermissionGallery.bind(this)}
+        />
         <Banner
+          style={{position: 'absolute',bottom:0 }}
           unitId={unitId}
           size={'SMART_BANNER'}
           request={request.build()}
@@ -82,11 +101,6 @@ export default class RNTextDetectorHomeScreen extends React.Component {
             console.log('Advert loaded');
           }}
         />
-        <Button
-          title="open gallery"
-          onPress={this.requestReadPermissionGallery.bind(this)}
-        />
-
       </View>
     );
   }
